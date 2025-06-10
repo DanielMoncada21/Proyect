@@ -1,4 +1,5 @@
 require('dotenv').config();
+const cors = require('cors');
 const express = require('express');
 const estudiantesRoutes = require('./routes/estudiantesRoutes');
 const asignaturasRoutes = require('./routes/asignaturasRoutes');
@@ -8,6 +9,7 @@ const inscripcionesRoutes = require('./routes/inscripcionesRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+app.use(cors());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

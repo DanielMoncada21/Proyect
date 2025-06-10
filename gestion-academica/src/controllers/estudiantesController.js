@@ -8,7 +8,7 @@ exports.getAll = (req, res) => {
 };
 
 exports.getById = (req, res) => {
-    const { id } = req.params;
+    const { id } = req.params;  
     db.query('SELECT * FROM estudiantes WHERE id = ?', [id], (err, results) => {
         if (err) return res.status(500).json({ error: err.message });
         if (results.length === 0) return res.status(404).json({ message: 'Estudiante no encontrado' });

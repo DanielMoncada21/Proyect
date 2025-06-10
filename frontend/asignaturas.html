@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestión de Asignaturas</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Gestión de Asignaturas</h1>
+
+  <section>
+    <h2>Registrar/Actualizar Asignatura</h2>
+    <form id="form-asignatura">
+      <input type="hidden" id="id" name="id">
+      <label>Nombre: <input type="text" id="nombre" name="nombre" required></label>
+      <label>Código: <input type="text" id="codigo" name="codigo" required></label>
+      <button type="submit">Guardar</button>
+    </form>
+  </section>
+
+  <section>
+    <h2>Lista de Asignaturas</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th><th>Nombre</th><th>Código</th><th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="tabla-asignaturas"></tbody>
+    </table>
+  </section>
+
+  <script src="asignaturas.js"></script>
+</body>
+</html>

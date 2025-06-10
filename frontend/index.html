@@ -1,42 +1,26 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>Gestión Académica</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inicio - Gestión Universitaria</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Gestión Académica</h1>
-    <div class="container">
-        <section>
-            <h2>Estudiantes</h2>
-            <form id="form-estudiante">
-                <input type="text" id="nombre" placeholder="Nombre" required>
-                <input type="text" id="apellido" placeholder="Apellido" required>
-                <input type="number" id="edad" placeholder="Edad" required>
-                <button type="submit">Agregar</button>
-            </form>
-            <ul id="lista-estudiantes"></ul>
-        </section>
-        <section>
-            <h2>Asignaturas</h2>
-            <form id="form-asignatura">
-                <input type="text" id="nombre-asig" placeholder="Nombre" required>
-                <input type="number" id="creditos" placeholder="Créditos" required>
-                <button type="submit">Agregar</button>
-            </form>
-            <ul id="lista-asignaturas"></ul>
-        </section>
-        <section>
-            <h2>Profesores</h2>
-            <form id="form-profesor">
-                <input type="text" id="nombre-prof" placeholder="Nombre" required>
-                <input type="text" id="apellido-prof" placeholder="Apellido" required>
-                <button type="submit">Agregar</button>
-            </form>
-            <ul id="lista-profesores"></ul>
-        </section>
-    </div>
-    <script src="main.js"></script>
+  <header>
+    <h1>Aplicativo de Gestión Universitaria</h1>
+  </header>
+
+  <main>
+    <nav class="main-menu">
+      <ul>
+        <li><a href="estudiantes.html">Estudiantes</a></li>
+        <li><a href="profesores.html">Profesores</a></li>
+        <li><a href="asignaturas.html">Asignaturas</a></li>
+        <li><a href="asignaturas_impartidas.html">Asignaturas Impartidas</a></li>
+        <li><a href="inscripciones.html">Inscripciones</a></li>
+      </ul>
+    </nav>
+  </main>
 </body>
 </html>

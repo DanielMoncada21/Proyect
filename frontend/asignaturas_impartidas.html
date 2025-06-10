@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Asignaturas Impartidas</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Gestión de Asignaturas Impartidas</h1>
+
+  <section>
+    <h2>Registrar/Actualizar</h2>
+    <form id="form-asig-imp">
+      <input type="hidden" id="id" name="id">
+      <label>ID Profesor: <input type="number" id="profesorId" name="profesorId" required></label>
+      <label>ID Asignatura: <input type="number" id="asignaturaId" name="asignaturaId" required></label>
+      <label>Grupo: <input type="text" id="grupo" name="grupo" required></label>
+      <label>Horario: <input type="text" id="horario" name="horario" required></label>
+      <button type="submit">Guardar</button>
+    </form>
+  </section>
+
+  <section>
+    <h2>Lista de Asignaturas Impartidas</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th><th>ID Profesor</th><th>ID Asignatura</th><th>Grupo</th><th>Horario</th><th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="tabla-asig-imp"></tbody>
+    </table>
+  </section>
+
+  <script src="asignaturas_impartidass.js"></script>
+</body>
+</html>
