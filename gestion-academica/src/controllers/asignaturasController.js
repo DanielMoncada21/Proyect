@@ -1,44 +1,97 @@
-const db = require('../db');
+const Asignaturas = require('../models/asignaturasmodels');
 
-exports.getAll = (req, res) => {
-    db.query('SELECT * FROM asignaturas', (err, results) => {
-        if (err) return res.status(500).json({ error: 'Error al obtener las asignaturas' });
-        res.json(results);
-    });
+// Obtener todas las asignaturas
+const obtenerTodasLasAsignaturas = async (req, res) => {
+  try {
+    const asignaturas = await Asignaturas.findAll();
+    res.json(asignaturas);
+  } catch (error) {
+    console.error('Error al obtener las asignaturas:', error);
+    res.status(500).json({ error: 'Error del servidor' });
+  }
 };
 
-exports.getById = (req, res) => {
-    const { id } = req.params;
-    db.query('SELECT * FROM asignaturas WHERE id = ?', [id], (err, results) => {
-        if (err) return res.status(500).json({ error: 'Error al obtener la asignatura' });
-        if (results.length === 0) return res.status(404).json({ error: 'Asignatura no encontrada' });
-        res.json(results[0]);
-    });
+// Obtener asignatura por ID
+const obtenerAsignaturaPorId = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const asignatura = await Asignaturas.findByPk(id);
+
+    if (asignatura) {
+      res.json(asignatura);
+    } else {
+      res.status(404).json({ error: 'Asignatura no encontrada' });
+    }
+  } catch (error) {
+    console.error('Error al buscar la asignatura:', error);
+    res.status(500).json({ error: 'Error del servidor' });
+  }
 };
 
-exports.create = (req, res) => {
+// Crear una nueva asignatura
+const crearAsignatura = async (req, res) => {
+  try {
     const { nombre, creditos } = req.body;
-    db.query('INSERT INTO asignaturas (nombre, creditos) VALUES (?, ?)', [nombre, creditos], (err, results) => {
-        if (err) return res.status(500).json({ error: 'Error al crear la asignatura' });
-        res.status(201).json({ id: results.insertId, nombre, creditos });
+
+    if (!nombre || creditos == null) {
+      return res.status(400).json({ error: 'Faltan datos requeridos' });
+    }
+
+    const nuevaAsignatura = await Asignaturas.create({
+      nombre,
+      creditos
     });
+
+    res.status(201).json(nuevaAsignatura);
+  } catch (error) {
+    console.error('Error al crear la asignatura:', error);
+    res.status(500).json({ error: 'Error del servidor' });
+  }
 };
 
-exports.update = (req, res) => {
-    const { id } = req.params;
+// Modificar asignatura
+const modificarAsignatura = async (req, res) => {
+  try {
+    const id = req.params.id;
     const { nombre, creditos } = req.body;
-    db.query('UPDATE asignaturas SET nombre = ?, creditos = ? WHERE id = ?', [nombre, creditos, id], (err, results) => {
-        if (err) return res.status(500).json({ error: 'Error al actualizar la asignatura' });
-        if (results.affectedRows === 0) return res.status(404).json({ error: 'Asignatura no encontrada' });
-        res.json({ id, nombre, creditos });
-    });
+
+    const asignatura = await Asignaturas.findByPk(id);
+    if (!asignatura) {
+      return res.status(404).json({ error: 'Asignatura no encontrada' });
+    }
+
+    asignatura.nombre = nombre;
+    asignatura.creditos = creditos;
+    await asignatura.save();
+
+    res.json({ mensaje: 'Asignatura actualizada correctamente', asignatura });
+  } catch (error) {
+    console.error('Error al actualizar la asignatura:', error);
+    res.status(500).json({ error: 'Error del servidor' });
+  }
 };
 
-exports.delete = (req, res) => {
-    const { id } = req.params;
-    db.query('DELETE FROM asignaturas WHERE id = ?', [id], (err, results) => {
-        if (err) return res.status(500).json({ error: 'Error al eliminar la asignatura' });
-        if (results.affectedRows === 0) return res.status(404).json({ error: 'Asignatura no encontrada' });
-        res.status(204).send();
-    });
+// Eliminar asignatura
+const eliminarAsignatura = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const asignatura = await Asignaturas.findByPk(id);
+    if (!asignatura) {
+      return res.status(404).json({ error: 'Asignatura no encontrada' });
+    }
+
+    await asignatura.destroy();
+    res.json({ mensaje: 'Asignatura eliminada correctamente' });
+  } catch (error) {
+    console.error('Error al eliminar la asignatura:', error);
+    res.status(500).json({ error: 'Error del servidor' });
+  }
+};
+
+module.exports = {
+  obtenerTodasLasAsignaturas,
+  obtenerAsignaturaPorId,
+  crearAsignatura,
+  modificarAsignatura,
+  eliminarAsignatura
 };

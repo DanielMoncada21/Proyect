@@ -1,37 +1,79 @@
-const model = require('../models/inscripciones');
+const Inscripciones = require('../models/inscripciones');
 
-exports.getAll = (req, res) => {
-  model.getAllInscripciones((err, data) => {
-    if (err) return res.status(500).json({ error: 'Error al obtener inscripciones' });
-    res.json(data);
-  });
+const obtenerTodas = async (req, res) => {
+  try {
+    const inscripciones = await Inscripciones.findAll();
+    res.json(inscripciones);
+  } catch (error) {
+    console.error('Error al obtener inscripciones:', error);
+    res.status(500).json({ error: 'Error del servidor' });
+  }
 };
 
-exports.getById = (req, res) => {
-  model.getInscripcionById(req.params.id, (err, data) => {
-    if (err) return res.status(500).json({ error: 'Error al obtener inscripción' });
-    if (!data) return res.status(404).json({ error: 'No encontrada' });
-    res.json(data);
-  });
+const obtenerPorId = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const inscripcion = await Inscripciones.findByPk(id);
+
+    if (inscripcion) {
+      res.json(inscripcion);
+    } else {
+      res.status(404).json({ error: 'Inscripción no encontrada' });
+    }
+  } catch (error) {
+    console.error('Error al buscar la inscripción:', error);
+    res.status(500).json({ error: 'Error del servidor' });
+  }
 };
 
-exports.create = (req, res) => {
-  model.createInscripcion(req.body, (err, id) => {
-    if (err) return res.status(500).json({ error: 'Error al crear inscripción' });
-    res.json({ id });
-  });
+const crear = async (req, res) => {
+  try {
+    const nuevaInscripcion = await Inscripciones.create(req.body);
+    res.status(201).json(nuevaInscripcion);
+  } catch (error) {
+    console.error('Error al crear la inscripción:', error);
+    res.status(500).json({ error: 'Error del servidor' });
+  }
 };
 
-exports.update = (req, res) => {
-  model.updateInscripcion(req.params.id, req.body, (err) => {
-    if (err) return res.status(500).json({ error: 'Error al actualizar inscripción' });
-    res.sendStatus(204);
-  });
+const actualizar = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const inscripcion = await Inscripciones.findByPk(id);
+
+    if (!inscripcion) {
+      return res.status(404).json({ error: 'Inscripción no encontrada' });
+    }
+
+    await inscripcion.update(req.body);
+    res.json(inscripcion);
+  } catch (error) {
+    console.error('Error al actualizar la inscripción:', error);
+    res.status(500).json({ error: 'Error del servidor' });
+  }
 };
 
-exports.delete = (req, res) => {
-  model.deleteInscripcion(req.params.id, (err) => {
-    if (err) return res.status(500).json({ error: 'Error al eliminar inscripción' });
-    res.sendStatus(204);
-  });
+const eliminar = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const inscripcion = await Inscripciones.findByPk(id);
+
+    if (!inscripcion) {
+      return res.status(404).json({ error: 'Inscripción no encontrada' });
+    }
+
+    await inscripcion.destroy();
+    res.json({ mensaje: 'Inscripción eliminada correctamente' });
+  } catch (error) {
+    console.error('Error al eliminar la inscripción:', error);
+    res.status(500).json({ error: 'Error del servidor' });
+  }
+};
+
+module.exports = {
+  obtenerTodas,
+  obtenerPorId,
+  crear,
+  actualizar,
+  eliminar
 };

@@ -8,7 +8,6 @@ form.addEventListener('submit', async (e) => {
   const id = form.id.value;
   const data = {
     nombre: form.nombre.value,
-    departamento: form.departamento.value,
     correo: form.correo.value
   };
 
@@ -40,7 +39,6 @@ async function loadProfesores() {
     fila.innerHTML = `
       <td>${prof.id}</td>
       <td>${prof.nombre}</td>
-      <td>${prof.departamento}</td>
       <td>${prof.correo}</td>
       <td>
         <button onclick='editar(${JSON.stringify(prof)})'>Editar</button>
@@ -54,7 +52,6 @@ async function loadProfesores() {
 function editar(prof) {
   form.id.value = prof.id;
   form.nombre.value = prof.nombre;
-  form.departamento.value = prof.departamento;
   form.correo.value = prof.correo;
 }
 

@@ -14,7 +14,8 @@
     <form id="form-asignatura">
       <input type="hidden" id="id" name="id">
       <label>Nombre: <input type="text" id="nombre" name="nombre" required></label>
-      <label>Código: <input type="text" id="codigo" name="codigo" required></label>
+      <label>ID: <input type="text" id="ID" name="ID" required></label>
+      <label>Créditos: <input type="number" id="creditos" name="creditos" required></label>
       <button type="submit">Guardar</button>
     </form>
   </section>
@@ -24,7 +25,7 @@
     <table>
       <thead>
         <tr>
-          <th>ID</th><th>Nombre</th><th>Código</th><th>Acciones</th>
+          <th>ID</th><th>Nombre</th><th>Creditos</th><th>Acciones</th>
         </tr>
       </thead>
       <tbody id="tabla-asignaturas"></tbody>

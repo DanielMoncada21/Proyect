@@ -1,49 +1,89 @@
-const db = require('../db');
+const Profesores = require('../models/profesoresmodels');
 
 // Obtener todos los profesores
-exports.getProfesores = (req, res) => {
-  db.query('SELECT * FROM profesores', (err, results) => {
-    if (err) return res.status(500).json({ error: 'Error al obtener profesores' });
-    res.json(results);
-  });
+const obtenerProfesores = async (req, res) => {
+  try {
+    const profesores = await Profesores.findAll();
+    res.json(profesores);
+  } catch (error) {
+    console.error('Error al obtener profesores:', error);
+    res.status(500).json({ error: 'Error del servidor' });
+  }
 };
 
-// Obtener profesor por ID
-exports.getProfesorById = (req, res) => {
-  const { id } = req.params;
-  db.query('SELECT * FROM profesores WHERE id = ?', [id], (err, results) => {
-    if (err) return res.status(500).json({ error: 'Error al obtener el profesor' });
-    if (results.length === 0) return res.status(404).json({ error: 'Profesor no encontrado' });
-    res.json(results[0]);
-  });
+// Obtener un profesor por ID
+const obtenerProfesorPorId = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const profesor = await Profesores.findByPk(id);
+
+    if (profesor) {
+      res.json(profesor);
+    } else {
+      res.status(404).json({ error: 'Profesor no encontrado' });
+    }
+  } catch (error) {
+    console.error('Error al buscar el profesor:', error);
+    res.status(500).json({ error: 'Error del servidor' });
+  }
 };
 
-// Crear nuevo profesor
-exports.createProfesor = (req, res) => {
-  const { nombre, correo } = req.body;
-  db.query('INSERT INTO profesores (nombre, correo) VALUES (?, ?)', [nombre, correo], (err, results) => {
-    if (err) return res.status(500).json({ error: 'Error al crear el profesor' });
-    res.status(201).json({ id: results.insertId, nombre, correo });
-  });
+// Crear un nuevo profesor
+const crearProfesor = async (req, res) => {
+  try {
+    const { nombre, correo } = req.body;
+    const nuevoProfesor = await Profesores.create({ nombre, correo });
+    res.status(201).json(nuevoProfesor);
+  } catch (error) {
+    console.error('Error al crear el profesor:', error);
+    res.status(500).json({ error: 'Error del servidor' });
+  }
 };
 
-// Actualizar profesor
-exports.updateProfesor = (req, res) => {
-  const { id } = req.params;
-  const { nombre, correo } = req.body;
-  db.query('UPDATE profesores SET nombre = ?, correo = ? WHERE id = ?', [nombre, correo, id], (err, results) => {
-    if (err) return res.status(500).json({ error: 'Error al actualizar el profesor' });
-    if (results.affectedRows === 0) return res.status(404).json({ error: 'Profesor no encontrado' });
-    res.json({ id, nombre, correo });
-  });
+// Actualizar un profesor
+const actualizarProfesor = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const { nombre, correo } = req.body;
+
+    const profesor = await Profesores.findByPk(id);
+    if (!profesor) {
+      return res.status(404).json({ error: 'Profesor no encontrado' });
+    }
+
+    profesor.nombre = nombre;
+    profesor.correo = correo;
+
+    await profesor.save();
+    res.json(profesor);
+  } catch (error) {
+    console.error('Error al actualizar el profesor:', error);
+    res.status(500).json({ error: 'Error del servidor' });
+  }
 };
 
-// Eliminar profesor
-exports.deleteProfesor = (req, res) => {
-  const { id } = req.params;
-  db.query('DELETE FROM profesores WHERE id = ?', [id], (err, results) => {
-    if (err) return res.status(500).json({ error: 'Error al eliminar el profesor' });
-    if (results.affectedRows === 0) return res.status(404).json({ error: 'Profesor no encontrado' });
-    res.status(204).send();
-  });
+// Eliminar un profesor
+const eliminarProfesor = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const profesor = await Profesores.findByPk(id);
+
+    if (!profesor) {
+      return res.status(404).json({ error: 'Profesor no encontrado' });
+    }
+
+    await profesor.destroy();
+    res.json({ mensaje: 'Profesor eliminado correctamente' });
+  } catch (error) {
+    console.error('Error al eliminar el profesor:', error);
+    res.status(500).json({ error: 'Error del servidor' });
+  }
+};
+
+module.exports = {
+  obtenerProfesores,
+  obtenerProfesorPorId,
+  crearProfesor,
+  actualizarProfesor,
+  eliminarProfesor
 };

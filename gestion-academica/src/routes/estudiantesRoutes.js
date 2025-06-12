@@ -1,20 +1,20 @@
-    const express = require('express');
-    const router = express.Router();
-    const controller = require('../controllers/estudiantesController');
+const express = require('express');
+const router = express.Router();
+const estudiantesController = require('../controllers/estudiantesController');
 
-    // Crear un nuevo estudiante
-    router.post('/', controller.create);
+// Obtener todos los estudiantes
+router.get('/', estudiantesController.obtenerTodos);
 
-    // Obtener todos los estudiantes
-    router.get('/', controller.getAll);
+// Obtener un estudiante por ID
+router.get('/:id', estudiantesController.obtenerPorId);
 
-    // Obtener un estudiante por ID
-    router.get('/:id', controller.getById);
+// Crear un nuevo estudiante
+router.post('/', estudiantesController.crear);
 
-    // Actualizar un estudiante por ID
-    router.put('/:id', controller.update);
+// Actualizar un estudiante
+router.put('/:id', estudiantesController.actualizar);
 
-    // Eliminar un estudiante por ID
-    router.delete('/:id', controller.delete);
+// Eliminar un estudiante
+router.delete('/:id', estudiantesController.eliminar);
 
-    module.exports = router;
+module.exports = router;

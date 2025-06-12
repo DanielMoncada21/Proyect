@@ -1,11 +1,20 @@
 const express = require('express');
 const router = express.Router();
-const controller = require('../controllers/asignaturasController');
+const asignaturasController = require('../controllers/asignaturasController');
 
-router.get('/', controller.getAll);
-router.get('/:id', controller.getById);
-router.post('/', controller.create);
-router.put('/:id', controller.update);
-router.delete('/:id', controller.delete);
+// Obtener todas las asignaturas
+router.get('/', asignaturasController.obtenerTodasLasAsignaturas);
+
+// Obtener una asignatura por ID
+router.get('/:id', asignaturasController.obtenerAsignaturaPorId);
+
+// Crear una nueva asignatura
+router.post('/', asignaturasController.crearAsignatura);
+
+// Modificar una asignatura existente
+router.put('/:id', asignaturasController.modificarAsignatura);
+
+// Eliminar una asignatura
+router.delete('/:id', asignaturasController.eliminarAsignatura);
 
 module.exports = router;

@@ -1,5 +1,6 @@
 require('dotenv').config();
 const cors = require('cors');
+const sequelize = require('./db');
 const express = require('express');
 const estudiantesRoutes = require('./routes/estudiantesRoutes');
 const asignaturasRoutes = require('./routes/asignaturasRoutes');
@@ -11,11 +12,7 @@ const app = express();
 const PORT = process.env.PORT ;
 
 
-app.use(cors({
-    origin: ['http://localhost:5500', 'http://127.0.0.1:5500'],
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type']
-}));
+app.use(cors());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -29,4 +26,9 @@ app.use('/api/inscripciones', inscripcionesRoutes);
 
 app.listen(PORT, () => {
     console.log(`✅ Servidor corriendo en http://localhost:${PORT}`);
+    
 });
+
+sequelize.authenticate()
+  .then(() => console.log('✅ Conexión establecida con MySQL'))
+  .catch(err => console.error('❌ Error de conexión:', err));

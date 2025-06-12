@@ -1,65 +1,48 @@
-const db = require('../db');
+const { DataTypes } = require('sequelize');
+const sequelize = require('../db');
+const Profesores = require('./profesoresmodels');
+const Asignaturas = require('./asignaturasmodels');
 
-// Obtener todas las asignaturas impartidas
-function getAllAsignaturasImpartidas(callback) {
-  db.query('SELECT * FROM asignaturas_impartidas', (err, results) => {
-    if (err) return callback(err);
-    callback(null, results);
-  });
-}
-
-// Obtener una asignatura impartida por ID
-function getAsignaturaImpartidaById(id, callback) {
-  db.query('SELECT * FROM asignaturas_impartidas WHERE id = ?', [id], (err, results) => {
-    if (err) return callback(err);
-    callback(null, results[0]);
-  });
-}
-
-// Crear una nueva asignatura impartida
-function createAsignaturaImpartida(data, callback) {
-  const asignatura = {
-    profesor_id: data.profesor_id,
-    asignaturas_id: data.asignaturas_id,
-    grupo: data.grupo,
-    horario: data.horario
-  };
-  db.query('INSERT INTO asignaturas_impartidas SET ?', asignatura, (err, result) => {
-    if (err) return callback(err);
-    callback(null, result.insertId);
-  });
-}
-
-// Actualizar una asignatura impartida
-function updateAsignaturaImpartida(id, data, callback) {
-  const asignatura = {
-    profesor_id: data.profesor_id,
-    asignaturas_id: data.asignaturas_id,
-    grupo: data.grupo,
-    horario: data.horario
-  };
-  db.query(
-    'UPDATE asignaturas_impartidas SET ? WHERE id = ?',
-    [asignatura, id],
-    (err, result) => {
-      if (err) return callback(err);
-      callback(null);
+const AsignaturasImpartidas = sequelize.define('AsignaturasImpartidas', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
+  profesor_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: {
+      model: Profesores,
+      key: 'id'
     }
-  );
-}
+  },
+  asignaturas_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: {
+      model: Asignaturas,
+      key: 'id'
+    }
+  },
+  grupo: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  horario: {
+    type: DataTypes.STRING,
+    allowNull: false
+  }
+}, {
+  tableName: 'asignaturas_impartidas',
+  timestamps: false
+});
 
-// Eliminar una asignatura impartida
-function deleteAsignaturaImpartida(id, callback) {
-  db.query('DELETE FROM asignaturas_impartidas WHERE id = ?', [id], (err, result) => {
-    if (err) return callback(err);
-    callback(null);
-  });
-}
+// Relaciones
+Profesores.hasMany(AsignaturasImpartidas, { foreignKey: 'profesor_id' });
+AsignaturasImpartidas.belongsTo(Profesores, { foreignKey: 'profesor_id' });
 
-module.exports = {
-  getAllAsignaturasImpartidas,
-  getAsignaturaImpartidaById,
-  createAsignaturaImpartida,
-  updateAsignaturaImpartida,
-  deleteAsignaturaImpartida
-};
+Asignaturas.hasMany(AsignaturasImpartidas, { foreignKey: 'asignaturas_id' });
+AsignaturasImpartidas.belongsTo(Asignaturas, { foreignKey: 'asignaturas_id' });
+
+module.exports = AsignaturasImpartidas;

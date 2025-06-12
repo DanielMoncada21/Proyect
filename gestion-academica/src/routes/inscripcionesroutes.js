@@ -1,8 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const controller = require('../controllers/inscripcionescontroller');
+const inscripcionesController = require('../controllers/inscripcionesController');
 
-router.get('/', controller.getAll);
-router.post('/', controller.create);
+router.get('/', inscripcionesController.obtenerTodas);
+router.get('/:id', inscripcionesController.obtenerPorId);
+router.post('/', inscripcionesController.crear);
+router.put('/:id', inscripcionesController.actualizar);
+router.delete('/:id', inscripcionesController.eliminar);
 
 module.exports = router;
+

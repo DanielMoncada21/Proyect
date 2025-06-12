@@ -1,59 +1,52 @@
-const db = require('../db');
+const { DataTypes } = require('sequelize');
+const sequelize = require('../db');
+const Estudiantes = require('./estudiantesmodels');
+const AsignaturasImpartidas = require('./asignaturas_impartidas');
 
-// Obtener todas las inscripciones
-function getAllInscripciones(callback) {
-  db.query('SELECT * FROM inscripciones', (err, results) => {
-    if (err) return callback(err);
-    callback(null, results);
-  });
-}
-
-// Obtener una inscripción por ID
-function getInscripcionById(id, callback) {
-  db.query('SELECT * FROM inscripciones WHERE id = ?', [id], (err, results) => {
-    if (err) return callback(err);
-    callback(null, results[0]);
-  });
-}
-
-// Crear una nueva inscripción
-function createInscripcion(data, callback) {
-  const { estudiante_id, asignatura_impartida_id, n1, n2, n3 } = data;
-  db.query(
-    'INSERT INTO inscripciones (estudiante_id, asignatura_impartida_id, n1, n2, n3) VALUES (?, ?, ?, ?, ?)',
-    [estudiante_id, asignatura_impartida_id, n1, n2, n3],
-    (err, result) => {
-      if (err) return callback(err);
-      callback(null, result.insertId);
+const Inscripciones = sequelize.define('Inscripciones', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
+  estudiante_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: {
+      model: Estudiantes,
+      key: 'id'
     }
-  );
-}
-
-// Actualizar una inscripción
-function updateInscripcion(id, data, callback) {
-  const { estudiante_id, asignatura_impartida_id, n1, n2, n3 } = data;
-  db.query(
-    'UPDATE inscripciones SET estudiante_id = ?, asignatura_impartida_id = ?, n1 = ?, n2 = ?, n3 = ? WHERE id = ?',
-    [estudiante_id, asignatura_impartida_id, n1, n2, n3, id],
-    (err, result) => {
-      if (err) return callback(err);
-      callback(null);
+  },
+  asignatura_impartida_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: {
+      model: AsignaturasImpartidas,
+      key: 'id'
     }
-  );
-}
+  },
+  n1: {
+    type: DataTypes.FLOAT,
+    allowNull: false
+  },
+  n2: {
+    type: DataTypes.FLOAT,
+    allowNull: false
+  },
+  n3: {
+    type: DataTypes.FLOAT,
+    allowNull: false
+  }
+}, {
+  tableName: 'inscripciones',
+  timestamps: false
+});
 
-// Eliminar una inscripción
-function deleteInscripcion(id, callback) {
-  db.query('DELETE FROM inscripciones WHERE id = ?', [id], (err, result) => {
-    if (err) return callback(err);
-    callback(null);
-  });
-}
+// Relaciones
+Estudiantes.hasMany(Inscripciones, { foreignKey: 'estudiante_id' });
+Inscripciones.belongsTo(Estudiantes, { foreignKey: 'estudiante_id' });
 
-module.exports = {
-  getAllInscripciones,
-  getInscripcionById,
-  createInscripcion,
-  updateInscripcion,
-  deleteInscripcion
-};
+AsignaturasImpartidas.hasMany(Inscripciones, { foreignKey: 'asignatura_impartida_id' });
+Inscripciones.belongsTo(AsignaturasImpartidas, { foreignKey: 'asignatura_impartida_id' });
+
+module.exports = Inscripciones;

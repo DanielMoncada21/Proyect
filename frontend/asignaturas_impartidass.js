@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:3000/asignaturas-impartidas';
+const API_URL = 'http://localhost:3000/api/asignaturas_impartidas';
 
 const form = document.getElementById('form-asig-imp');
 const tabla = document.getElementById('tabla-asig-imp');
@@ -40,8 +40,8 @@ async function cargar() {
     const fila = document.createElement('tr');
     fila.innerHTML = `
       <td>${r.id}</td>
-      <td>${r.profesorId}</td>
-      <td>${r.asignaturaId}</td>
+      <td>${r.profesor_id}</td>
+      <td>${r.asignaturas_id}</td>
       <td>${r.grupo}</td>
       <td>${r.horario}</td>
       <td>
