@@ -28,8 +28,9 @@ const crear = async (req, res) => {
     const nueva = await AsignaturasImpartidas.create(req.body);
     res.status(201).json(nueva);
   } catch (error) {
-    res.status(500).json({ error: 'Error al crear' });
-  }
+  console.error('Error al crear asignatura impartida:', error); // 👈 imprime el error en consola
+  res.status(500).json({ error: error.message });               // 👈 envía el mensaje real
+}
 };
 
 // Actualizar

@@ -7,8 +7,8 @@ form.addEventListener('submit', async (e) => {
   e.preventDefault();
   const id = form.id.value;
   const data = {
-    profesorId: form.profesorId.value,
-    asignaturaId: form.asignaturaId.value,
+    profesor_id: form.profesorId.value,
+    asignaturas_id: form.asignaturaId.value,
     grupo: form.grupo.value,
     horario: form.horario.value
   };
@@ -55,8 +55,8 @@ async function cargar() {
 
 function editar(r) {
   form.id.value = r.id;
-  form.profesorId.value = r.profesorId;
-  form.asignaturaId.value = r.asignaturaId;
+  form.profesor_id.value = r.profesor_id;
+  form.asignaturas_id.value = r.asignaturas_id;
   form.grupo.value = r.grupo;
   form.horario.value = r.horario;
 }
@@ -67,5 +67,4 @@ async function eliminar(id) {
     cargar();
   }
 }
-
 cargar();
