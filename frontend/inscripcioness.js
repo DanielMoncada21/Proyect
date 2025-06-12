@@ -32,8 +32,6 @@ async function cargarInscripciones() {
     fila.innerHTML = `
       <td>${i.estudiante_id}</td>
       <td>${i.asignatura_impartida_id}</td>
-      <td>${i.profesor_id}</td>
-      <td>${i.grupo}</td>
       <td><input type="number" value="${i.n1}" step="0.1" onchange="actualizarNota(${i.id}, 'n1', this.value)"></td>
       <td><input type="number" value="${i.n2}" step="0.1" onchange="actualizarNota(${i.id}, 'n2', this.value)"></td>
       <td><input type="number" value="${i.n3}" step="0.1" onchange="actualizarNota(${i.id}, 'n3', this.value)"></td>
