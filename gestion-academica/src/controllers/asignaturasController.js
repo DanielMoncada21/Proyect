@@ -109,5 +109,5 @@ module.exports = {
   crearAsignatura,
   modificarAsignatura,
   eliminarAsignatura,
-  obtenerProfesoresPorAsignatura // ✅ Exportar esta función
+  obtenerProfesoresPorAsignatura 
 };

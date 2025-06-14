@@ -89,7 +89,7 @@ const eliminar = async (req, res) => {
   }
 };
 
-// ✅ NUEVO: Obtener asignaturas y notas por estudiante
+
 const obtenerAsignaturasYNotasPorEstudiante = async (req, res) => {
   try {
     const idEstudiante = req.params.id;

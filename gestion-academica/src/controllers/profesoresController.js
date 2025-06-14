@@ -103,7 +103,7 @@ const getAsignaturasPorProfesor = async (req, res) => {
   }
 };
 
-// Exportar todos los controladores
+
 module.exports = {
   obtenerProfesores,
   obtenerProfesorPorId,

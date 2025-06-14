@@ -31,4 +31,4 @@ app.listen(PORT, () => {
 
 sequelize.authenticate()
   .then(() => console.log('✅ Conexión establecida con MySQL'))
-  .catch(err => console.error('❌ Error de conexión:', err));
+  .catch(err => console.error(' Error de conexión:', err));
