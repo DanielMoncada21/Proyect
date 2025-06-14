@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Notas por Asignatura y Grupo</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Lista de Estudiantes con Notas</h1>
+
+  <label for="asignaturaId">ID Asignatura:</label>
+  <input type="number" id="asignaturaId">
+
+  <label for="grupo">Grupo:</label>
+  <input type="text" id="grupo">
+
+  <button onclick="buscarNotas()">Buscar</button>
+
+  <div id="resultadoNotas"></div>
+
+  <script src="notas.js"></script>
+</body>
+</html>

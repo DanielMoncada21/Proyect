@@ -8,6 +8,8 @@ router.get('/', profesoresController.obtenerProfesores);
 // Obtener un profesor por ID
 router.get('/:id', profesoresController.obtenerProfesorPorId);
 
+router.get('/:id/asignaturas', profesoresController.getAsignaturasPorProfesor);
+
 // Crear un nuevo profesor
 router.post('/', profesoresController.crearProfesor);
 

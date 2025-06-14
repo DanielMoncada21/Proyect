@@ -1,4 +1,6 @@
 const Asignaturas = require('../models/asignaturasmodels');
+const AsignaturasImpartidas = require('../models/asignaturas_impartidas');
+const Profesores = require('../models/profesoresmodels');
 
 // Obtener todas las asignaturas
 const obtenerTodasLasAsignaturas = async (req, res) => {
@@ -37,11 +39,7 @@ const crearAsignatura = async (req, res) => {
       return res.status(400).json({ error: 'Faltan datos requeridos' });
     }
 
-    const nuevaAsignatura = await Asignaturas.create({
-      nombre,
-      creditos
-    });
-
+    const nuevaAsignatura = await Asignaturas.create({ nombre, creditos });
     res.status(201).json(nuevaAsignatura);
   } catch (error) {
     console.error('Error al crear la asignatura:', error);
@@ -88,10 +86,28 @@ const eliminarAsignatura = async (req, res) => {
   }
 };
 
+// Obtener profesores que imparten una asignatura
+const obtenerProfesoresPorAsignatura = async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    const asignaturas = await AsignaturasImpartidas.findAll({
+      where: { asignaturas_id: id },
+      include: [Profesores]
+    });
+
+    res.json({ AsignaturasImpartidas: asignaturas });
+  } catch (error) {
+    console.error('Error al obtener profesores por asignatura:', error);
+    res.status(500).json({ error: 'Error del servidor' });
+  }
+};
+
 module.exports = {
   obtenerTodasLasAsignaturas,
   obtenerAsignaturaPorId,
   crearAsignatura,
   modificarAsignatura,
-  eliminarAsignatura
+  eliminarAsignatura,
+  obtenerProfesoresPorAsignatura // ✅ Exportar esta función
 };

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Consultas</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Consultas Académicas</h1>
+
+  <h2>Asignaturas por Profesor</h2>
+  <input type="number" id="profesorId" placeholder="ID del profesor">
+  <button onclick="buscarAsignaturasPorProfesor()">Buscar</button>
+  <div id="resultadoAsignaturas"></div>
+
+  <h2>Profesores por Asignatura</h2>
+  <input type="number" id="asignaturaId" placeholder="ID de la asignatura">
+  <button onclick="buscarProfesoresPorAsignatura()">Buscar</button>
+  <div id="resultadoProfesores"></div>
+
+  <script src="consultas.js"></script>
+</body>
+</html>

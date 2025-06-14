@@ -17,4 +17,8 @@ router.put('/:id', asignaturasController.modificarAsignatura);
 // Eliminar una asignatura
 router.delete('/:id', asignaturasController.eliminarAsignatura);
 
+// Obtener los profesores que dictan una asignatura
+router.get('/:id/profesores', asignaturasController.obtenerProfesoresPorAsignatura);
+
 module.exports = router;
+

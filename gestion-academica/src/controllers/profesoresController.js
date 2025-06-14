@@ -1,4 +1,6 @@
 const Profesores = require('../models/profesoresmodels');
+const AsignaturasImpartidas = require('../models/asignaturas_impartidas');
+const Asignaturas = require('../models/asignaturasmodels');
 
 // Obtener todos los profesores
 const obtenerProfesores = async (req, res) => {
@@ -80,10 +82,33 @@ const eliminarProfesor = async (req, res) => {
   }
 };
 
+// Obtener las asignaturas que imparte un profesor
+const getAsignaturasPorProfesor = async (req, res) => {
+  try {
+    const profesor = await Profesores.findByPk(req.params.id, {
+      include: {
+        model: AsignaturasImpartidas,
+        include: [Asignaturas]
+      }
+    });
+
+    if (!profesor) {
+      return res.status(404).json({ error: 'Profesor no encontrado' });
+    }
+
+    res.json(profesor);
+  } catch (error) {
+    console.error('Error al obtener asignaturas por profesor:', error);
+    res.status(500).json({ error: 'Error del servidor' });
+  }
+};
+
+// Exportar todos los controladores
 module.exports = {
   obtenerProfesores,
   obtenerProfesorPorId,
   crearProfesor,
   actualizarProfesor,
-  eliminarProfesor
+  eliminarProfesor,
+  getAsignaturasPorProfesor
 };

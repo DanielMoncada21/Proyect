@@ -55,8 +55,8 @@ async function cargar() {
 
 function editar(r) {
   form.id.value = r.id;
-  form.profesor_id.value = r.profesor_id;
-  form.asignaturas_id.value = r.asignaturas_id;
+  form.profesorId.value = r.profesor_id;
+  form.asignaturaId.value = r.asignaturas_id;
   form.grupo.value = r.grupo;
   form.horario.value = r.horario;
 }

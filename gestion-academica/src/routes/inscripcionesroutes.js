@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const inscripcionesController = require('../controllers/inscripcionesController');
 
+router.get('/estudiante/:id', inscripcionesController.obtenerAsignaturasYNotasPorEstudiante);
 router.get('/', inscripcionesController.obtenerTodas);
 router.get('/:id', inscripcionesController.obtenerPorId);
 router.post('/', inscripcionesController.crear);

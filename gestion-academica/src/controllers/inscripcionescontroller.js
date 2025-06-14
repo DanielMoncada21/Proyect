@@ -1,8 +1,18 @@
 const Inscripciones = require('../models/inscripciones');
+const Estudiantes = require('../models/estudiantesmodels');
+const Asignaturas = require('../models/asignaturasmodels');
+const AsignaturasImpartidas = require('../models/asignaturas_impartidas');
+const Profesores = require('../models/profesoresmodels');
 
+// Obtener todas las inscripciones
 const obtenerTodas = async (req, res) => {
   try {
-    const inscripciones = await Inscripciones.findAll();
+    const inscripciones = await Inscripciones.findAll({
+      include: {
+        model: Estudiantes,
+        attributes: ['nombre']
+      }
+    });
     res.json(inscripciones);
   } catch (error) {
     console.error('Error al obtener inscripciones:', error);
@@ -10,10 +20,16 @@ const obtenerTodas = async (req, res) => {
   }
 };
 
+// Obtener inscripción por ID
 const obtenerPorId = async (req, res) => {
   try {
     const id = req.params.id;
-    const inscripcion = await Inscripciones.findByPk(id);
+    const inscripcion = await Inscripciones.findByPk(id, {
+      include: {
+        model: Estudiantes,
+        attributes: ['nombre']
+      }
+    });
 
     if (inscripcion) {
       res.json(inscripcion);
@@ -26,6 +42,7 @@ const obtenerPorId = async (req, res) => {
   }
 };
 
+// Crear nueva inscripción
 const crear = async (req, res) => {
   try {
     const nuevaInscripcion = await Inscripciones.create(req.body);
@@ -36,6 +53,7 @@ const crear = async (req, res) => {
   }
 };
 
+// Actualizar inscripción
 const actualizar = async (req, res) => {
   try {
     const id = req.params.id;
@@ -53,6 +71,7 @@ const actualizar = async (req, res) => {
   }
 };
 
+// Eliminar inscripción
 const eliminar = async (req, res) => {
   try {
     const id = req.params.id;
@@ -70,10 +89,45 @@ const eliminar = async (req, res) => {
   }
 };
 
+// ✅ NUEVO: Obtener asignaturas y notas por estudiante
+const obtenerAsignaturasYNotasPorEstudiante = async (req, res) => {
+  try {
+    const idEstudiante = req.params.id;
+
+    const inscripciones = await Inscripciones.findAll({
+      where: { estudiante_id: idEstudiante },
+      include: [{
+        model: AsignaturasImpartidas,
+        include: [
+          { model: Asignaturas, attributes: ['nombre'] },
+          { model: Profesores, attributes: ['nombre'] }
+        ]
+      }]
+    });
+
+    const resultado = inscripciones.map(ins => ({
+      asignatura: ins.AsignaturasImpartida?.Asignatura?.nombre || 'sin asignatura',
+      grupo: ins.AsignaturasImpartida?.grupo || 'N/A',
+      profesor: ins.AsignaturasImpartida?.Profesore?.nombre || 'sin profesor',
+      notas: {
+        corte1: ins.n1,
+        corte2: ins.n2,
+        corte3: ins.n3
+      }
+    }));
+
+    res.json(resultado);
+  } catch (error) {
+    console.error('Error al obtener asignaturas del estudiante:', error);
+    res.status(500).json({ error: 'Error del servidor' });
+  }
+};
+
 module.exports = {
   obtenerTodas,
   obtenerPorId,
   crear,
   actualizar,
-  eliminar
+  eliminar,
+  obtenerAsignaturasYNotasPorEstudiante 
 };
